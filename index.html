@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Documentation Page</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <header>Introducing JSX</header>
+    <a class="nav-link" href="#Introduction">Introduction</a>
+    <a class="nav-link" href="#Why_JSX">Why JSX</a>
+    <a class="nav-link" href="#Embedding_Expressions_in_JSX">Embedding Expressions in JSX</a>
+    <a class="nav-link" href="#JSX_is_an_Expression_Too">JSX is an Expression Too</a>
+    <a class="nav-link" href="#Specifying_Attributes_with_JSX">Specifying Attributes with JSX</a>
+    <a class="nav-link" href="#Specifying_Children_with_JSX">Specifying Children with JSX</a>
+    <a class="nav-link" href="#JSX_Prevents_Injection_Attacks">JSX Prevents Injection Attacks</a>
+    <a class="nav-link" href="#JSX_Represents_Objects">JSX Represents Objects</a>
+  </nav>
+    
+  <main id="main-doc">
+    <section class="main-section" id="Introduction">
+      <header>Introduction</header>
+      <p>Consider this variable declaration:</p>
+      <pre><code>
+        const element = &lth1&gtHello, world!&lt/h1&gt;
+      </code></pre>
+      <p>This funny tag syntax is neither a string nor HTML.</p>
+      <p>It is called JSX, and it is a syntax extension to JavaScript. We recommend using it with React to describe what the UI should look like. JSX may remind you of a template language, but it comes with the full power of JavaScript.</p>
+      <p>JSX produces React “elements”. We will explore rendering them to the DOM in the next section. Below, you can find the basics of JSX necessary to get you started.</p>
+    </section>
+
+    <section class="main-section" id="Why_JSX">
+      <header>Why JSX</header>
+      <p>React embraces the fact that rendering logic is inherently coupled with other UI logic: how events are handled, how the state changes over time, and how the data is prepared for display.</p>
+      <p>Instead of artificially separating technologies by putting markup and logic in separate files, React separates concerns with loosely coupled units called “components” that contain both. We will come back to components in a further section, but if you’re not yet comfortable putting markup in JS, this talk might convince you otherwise.</p>
+      <p>React doesn’t require using JSX, but most people find it helpful as a visual aid when working with UI inside the JavaScript code. It also allows React to show more useful error and warning messages.</p>
+      <p>With that out of the way, let’s get started!</p>
+    </section>
+
+    <section class="main-section" id="Embedding_Expressions_in_JSX">
+      <header>Embedding Expressions in JSX</header>
+      <p>In the example below, we declare a variable called name and then use it inside JSX by wrapping it in curly braces:</p>
+      <pre><code>
+        const name = 'Josh Perez';
+        const element = &lth1&gtHello, {name}&lt/h1&gt;
+        ReactDOM.render(
+          element,
+          document.getElementById('root')
+        );
+      </code></pre>
+      <p>You can put any valid JavaScript expression inside the curly braces in JSX. For example, 2 + 2, user.firstName, or formatName(user) are all valid JavaScript expressions.</p>
+      <p>In the example below, we embed the result of calling a JavaScript function, formatName(user), into an &lth1&gt element.</p>
+      <pre><code>
+        function formatName(user) {
+          return user.firstName + ' ' + user.lastName;
+        }
+
+        const user = {
+          firstName: 'Harper',
+          lastName: 'Perez'
+        };
+
+        const element = (
+          &lth1&gt
+            Hello, {formatName(user)}!
+          &lth1&gt
+        );
+
+        ReactDOM.render(
+          element,
+          document.getElementById('root')
+        );        
+      </code></pre>
+      <p>We split JSX over multiple lines for readability. While it isn’t required, when doing this, we also recommend wrapping it in parentheses to avoid the pitfalls of automatic semicolon insertion.</p>
+    </section>
+
+    <section class="main-section" id="JSX_is_an_Expression_Too">
+      <header>JSX is an Expression Too</header>
+      <p>After compilation, JSX expressions become regular JavaScript function calls and evaluate to JavaScript objects.</p>
+      <p>This means that you can use JSX inside of if statements and for loops, assign it to variables, accept it as arguments, and return it from functions:</p>
+      <pre><code>
+        function getGreeting(user) {
+          if (user) {
+            return &lth1&gtHello, {formatName(user)}!&lt/h1&gt;
+          }
+          return &lth1&gtHello, Stranger.&lt/h1&gt;
+        }
+      </code></pre>
+    </section>
+
+    <section class="main-section" id="Specifying_Attributes_with_JSX">
+      <header>Specifying Attributes with JSX</header>
+      <p>You may use quotes to specify string literals as attributes:</p>
+      <pre><code>
+        const element = &ltdiv tabIndex="0"&lt&gt/div&gt;
+      </code></pre>
+      <p>You may also use curly braces to embed a JavaScript expression in an attribute:</p>
+      <pre><code>
+        const element = &ltimg src={user.avatarUrl}&gt&lt/img&gt;
+      </code></pre>
+      <p>Don’t put quotes around curly braces when embedding a JavaScript expression in an attribute. You should either:</p>
+      <ul>
+        <li>use quotes (for string values)</li>
+        <li>curly braces (for expressions)</li>
+        <li>but not both in the same attribute</li>
+      </ul>
+    </section>
+
+    <section class="main-section" id="Specifying_Children_with_JSX">
+      <header>Specifying Children with JSX</header>
+      <p>If a tag is empty, you may close it immediately:</p>
+      <pre><code>
+        const element = &ltimg src={user.avatarUrl} /&gt;
+      </code></pre>
+      <p>JSX tags may contain children:</p>
+      <pre><code>
+        const element = (
+          &ltdiv&gt
+            &lth1&gtHello!&lt/h1&gt
+            &lth2&gtGood to see you here.&lt/h2&gt
+          &lt/div&gt
+        );
+      </code></pre>
+    </section>
+
+    <section class="main-section" id="JSX_Prevents_Injection_Attacks">
+      <header>JSX Prevents Injection Attacks</header>
+      <p>It is safe to embed user input in JSX:</p>
+      <pre><code>
+        const title = response.potentiallyMaliciousInput;
+        // This is safe:
+        const element = &lth1&gt{title}&lt/h1&gt;
+      </code></pre>
+      <p>By default, React DOM escapes any values embedded in JSX before rendering them:</p>
+      <ul>
+        <li>Thus it ensures that you can never inject anything that’s not explicitly written in your application.</li>
+        <li>Everything is converted to a string before being rendered.</li>
+        <li>This helps prevent XSS (cross-site-scripting) attacks.</li>
+      </ul>  
+    </section>
+      
+    <section class="main-section" id="JSX_Represents_Objects">
+      <header>JSX Represents Objects</header>
+      <p>Babel compiles JSX down to React.createElement() calls.</p>
+      <p>These two examples are identical:</p>
+      <pre><code>
+        const element = (
+          &lth1 className="greeting"&gt
+            Hello, world!
+          &lt/h1&gt
+        );
+      </code></pre>
+      <pre><code>
+        const element = React.createElement(
+          'h1',
+          {className: 'greeting'},
+          'Hello, world!'
+        );
+      </code></pre>
+      <p>React.createElement() performs a few checks to help you write bug-free code but essentially it creates an object like this:</p>
+      <pre><code>
+        // Note: this structure is simplified
+        const element = {
+          type: 'h1',
+          props: {
+            className: 'greeting',
+            children: 'Hello, world!'
+          }
+        };
+      </code></pre>
+      <p>These objects are called “React elements”. You can think of them as descriptions of what you want to see on the screen. React reads these objects and uses them to construct the DOM and keep it up to date.</p>
+      <p>We will explore rendering React elements to the DOM in the next section.</p>
+    </section>
+
+  </main>
+</body>
+</html>
